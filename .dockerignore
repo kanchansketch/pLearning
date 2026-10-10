@@ -1,0 +1,29 @@
+# Virtual environments
+.pLearning/
+.venv/
+venv/
+env/
+
+# Git
+.git/
+.gitignore
+
+# Bytecode & caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+plearning.db
+test_plearning.db
+
+# Documentation & IDE
+.vscode/
+.idea/
+*.md
