@@ -18,12 +18,12 @@ Infrastructure (SQLAlchemy / Repos) ──────────────�
 ### Domain-Driven Design (DDD) Concepts
 | Concept | Applied Where | What It Is & Why It's Done |
 |---|---|---|
-| **Aggregate Root** | [`Course`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/src/plearning/domain/entities/course.py) | Top-level entity controlling a cluster of child entities (`Module`, `Lesson`, `Assignment`). Changes to children must pass through root invariants (e.g. sequence re-ordering). |
-| **Child Entities** | [`Module`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/src/plearning/domain/entities/module.py), [`Lesson`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/src/plearning/domain/entities/lesson.py), [`Assignment`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/src/plearning/domain/entities/assignment.py) | Objects with unique identity (`id`) whose lifecycle belongs inside an aggregate. |
-| **Value Objects / Typed IDs** | [`ids.py`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/src/plearning/domain/value_objects/ids.py) | `CourseId`, `ModuleId`, `LessonId`, etc. Wrapping raw strings into distinct types prevents accidental bugs like passing a `ModuleId` where a `CourseId` is expected. |
-| **Repository Pattern** | [`domain/repositories/`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/src/plearning/domain/repositories) | Abstract Python classes (ABCs) specifying persistence contracts. Decouples domain from SQL/NoSQL storage. |
-| **Domain Services** | [`EnrollmentService`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/src/plearning/application/services/enrollment_service.py) | Business operations involving multiple aggregates (e.g. validating course exists + checking enrollment status + initializing progress). |
-| **Domain Exceptions** | [`exceptions.py`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/src/plearning/domain/exceptions.py) | Business errors subclassing `DomainException`. Never raise HTTP exceptions inside domain or application layers. |
+| **Aggregate Root** | [`Course`](src/plearning/domain/entities/course.py) | Top-level entity controlling a cluster of child entities (`Module`, `Lesson`, `Assignment`). Changes to children must pass through root invariants (e.g. sequence re-ordering). |
+| **Child Entities** | [`Module`](src/plearning/domain/entities/module.py), [`Lesson`](src/plearning/domain/entities/lesson.py), [`Assignment`](src/plearning/domain/entities/assignment.py) | Objects with unique identity (`id`) whose lifecycle belongs inside an aggregate. |
+| **Value Objects / Typed IDs** | [`ids.py`](src/plearning/domain/value_objects/ids.py) | `CourseId`, `ModuleId`, `LessonId`, etc. Wrapping raw strings into distinct types prevents accidental bugs like passing a `ModuleId` where a `CourseId` is expected. |
+| **Repository Pattern** | [`domain/repositories/`](src/plearning/domain/repositories) | Abstract Python classes (ABCs) specifying persistence contracts. Decouples domain from SQL/NoSQL storage. |
+| **Domain Services** | [`EnrollmentService`](src/plearning/application/services/enrollment_service.py) | Business operations involving multiple aggregates (e.g. validating course exists + checking enrollment status + initializing progress). |
+| **Domain Exceptions** | [`exceptions.py`](src/plearning/domain/exceptions.py) | Business errors subclassing `DomainException`. Never raise HTTP exceptions inside domain or application layers. |
 
 ---
 
@@ -37,7 +37,7 @@ Infrastructure (SQLAlchemy / Repos) ──────────────�
 
 ### `__all__`
 - **What**: A list of public strings exported when a module is imported via `from module import *`.
-- **Applied In**: [`main.py`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/main.py) (`__all__ = ["app"]`).
+- **Applied In**: [`main.py`](main.py) (`__all__ = ["app"]`).
 - **Why**: Explicitly controls module API surface and prevents accidental pollution of namespace.
 
 ### `@dataclass` vs `@dataclass(frozen=True)`
@@ -54,7 +54,7 @@ Infrastructure (SQLAlchemy / Repos) ──────────────�
 - **Why**: In memory tests, without `deepcopy`, modifying an entity in application code alters the "stored" instance by reference, creating test pollution and leaking state between test runs.
 
 ### `sys.path.insert(0, src_dir)`
-- **Applied In**: Root [`main.py`](file:///c:/Users/kanch/OneDrive/Desktop/Project/pLearning/main.py).
+- **Applied In**: Root [`main.py`](main.py).
 - **Why**: Allows running `python main.py` or `uvicorn main:app` directly from the project root without needing to install the package in editable mode (`pip install -e .`).
 
 ---

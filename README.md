@@ -51,17 +51,23 @@ A clean, production-grade learning management platform implementing **Domain-Dri
 
 ### 1. Clone or Open Project Directory
 
-```powershell
-cd c:\Users\kanch\OneDrive\Desktop\Project\pLearning
+```bash
+git clone https://github.com/kanchansketch/pLearning.git
+cd pLearning
 ```
 
 ### 2. Activate Virtual Environment
 
-A virtual environment named `.pLearning` is already available in the workspace:
+**Create and activate a virtual environment:**
 
-**On Windows (PowerShell):**
-```powershell
-.\.pLearning\Scripts\Activate.ps1
+```bash
+# Windows
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# macOS / Linux
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 *(If script execution is restricted: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`)*
 
@@ -437,24 +443,24 @@ Content-Type: application/json
 The repository is fully equipped with both unit and integration tests.
 
 ### Run all tests:
-```powershell
-.pLearning\Scripts\python.exe -m pytest -v
+```bash
+pytest -v
 ```
 
 ### Run only domain & application unit tests:
-```powershell
-.pLearning\Scripts\python.exe -m pytest tests/unit -v
+```bash
+pytest tests/unit -v
 ```
 
 ### Run API integration tests:
-```powershell
-.pLearning\Scripts\python.exe -m pytest tests/integration -v
+```bash
+pytest tests/integration -v
 ```
 
 ### Run with coverage report:
-```powershell
-.pLearning\Scripts\python.exe -m coverage run -m pytest tests/
-.pLearning\Scripts\python.exe -m coverage report --include="src/*"
+```bash
+coverage run -m pytest tests/
+coverage report --include="src/*"
 ```
 
 **Test Summary:**
