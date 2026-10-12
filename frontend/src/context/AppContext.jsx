@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '../services/authService';
 import { storageService } from '../services/storageService';
+import { apiService } from '../services/apiService';
 
 const AppContext = createContext(null);
 
@@ -10,6 +11,25 @@ export function AppProvider({ children }) {
 
   // Load courses from localStorage / staticData
   const [courses, setCourses] = useState(() => storageService.getCourses());
+
+  // Track whether the FastAPI backend is running
+  const [isBackendConnected, setIsBackendConnected] = useState(false);
+
+  // Check backend health on mount
+  useEffect(() => {
+    let isMounted = true;
+    apiService.checkHealth().then((isHealthy) => {
+      if (isMounted) {
+        setIsBackendConnected(isHealthy);
+        if (isHealthy) {
+          console.info('Connected to pLearning FastAPI backend');
+        }
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Currently active course (defaults to Architectural Spatial Mastery)
   const [activeCourseId, setActiveCourseId] = useState(() => {
@@ -50,10 +70,13 @@ export function AppProvider({ children }) {
     return newUser;
   };
 
-  // Toggle lesson complete & save to localStorage
+  // Toggle lesson complete & save to localStorage + background sync to backend
   const toggleLessonComplete = (courseId, lessonId) => {
     const result = storageService.toggleLessonComplete(courseId, lessonId);
     setCourses(result.courses);
+    if (user?.id) {
+      apiService.updateProgress(user.id, courseId, lessonId).catch(() => {});
+    }
     return result;
   };
 
@@ -70,6 +93,8 @@ export function AppProvider({ children }) {
     courses,
     activeCourse,
     setActiveCourseId,
+    isBackendConnected,
+    apiService,
     login,
     logout,
     switchWorkspaceRole,

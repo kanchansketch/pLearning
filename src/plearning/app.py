@@ -7,6 +7,7 @@ Assembles the FastAPI app, registers routers, and boots the DB.
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from plearning.infrastructure.persistence.database import init_db
 from plearning.interface.api.routers import (
@@ -34,6 +35,15 @@ def create_app() -> FastAPI:
         description="Adaptive Learning Platform – V1",
         version="1.0.0",
         lifespan=lifespan,
+    )
+
+    # ── CORS configuration ───────────────────────────────────────
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     # ── Register all routers ─────────────────────────────────────
