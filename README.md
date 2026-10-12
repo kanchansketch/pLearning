@@ -14,7 +14,8 @@ A clean, production-grade learning management platform implementing **Domain-Dri
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation & Setup](#installation--setup)
-- [Running the Application](#running-the-application)
+- [Running the Application (Backend API)](#running-the-application-backend-api)
+- [Running the Frontend Web App](#running-the-frontend-web-app)
 - [Interactive API Documentation](#interactive-api-documentation)
 - [API Usage Walkthrough (Step-by-Step)](#api-usage-walkthrough-step-by-step)
   - [1. Create a Course (Teacher)](#1-create-a-course-teacher)
@@ -42,6 +43,7 @@ A clean, production-grade learning management platform implementing **Domain-Dri
 ## Prerequisites
 
 - **Python 3.10+** (Tested on Python 3.10 and 3.11)
+- **Node.js 18+ & npm** (For running the React / Vite frontend)
 - **Pip** (Python package manager)
 - Windows PowerShell / Command Prompt or macOS/Linux Bash
 
@@ -86,7 +88,7 @@ pip install -r requirements.txt
 
 ---
 
-## Running the Application
+## Running the Application (Backend API)
 
 ### Option A: Direct Python Execution (Recommended)
 
@@ -113,6 +115,37 @@ To verify the server is running, visit `http://localhost:8000/health`:
   "status": "ok"
 }
 ```
+
+---
+
+## Running the Frontend Web App (React + Vite)
+
+The frontend is a modern single-page application built with **React 19**, **Vite**, and **Tailwind CSS v4**, based on the design specifications in [`UIUX/`](UIUX/):
+
+1. **Navigate to the frontend directory:**
+   ```powershell
+   cd frontend
+   ```
+
+2. **Install frontend dependencies (if not already installed):**
+   ```powershell
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```powershell
+   npm run dev
+   ```
+
+Once started, access the application in your browser at:
+```
+http://localhost:5173
+```
+
+- **Login / Role Selector**: Switch between Learner and Teacher views.
+- **Learner Dashboard**: Track streaks, weekly learning goals, and enrolled course cards.
+- **Interactive Classroom**: Video player, dynamic curriculum tree, homework submissions, and quiz assessments.
+- **Full-Stack Sync**: Automatically connects to the FastAPI backend at `http://localhost:8000` with graceful local storage fallback when offline.
 
 ---
 
