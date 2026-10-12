@@ -80,12 +80,27 @@ export function AppProvider({ children }) {
     return result;
   };
 
+  // Search query across catalog
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Course enrollment handler
+  const enrollCourse = (courseId) => {
+    const result = storageService.enrollCourse(courseId);
+    setUser(result.user);
+    setCourses(result.courses);
+    if (user?.id) {
+      apiService.enrollStudent(user.id, courseId).catch(() => {});
+    }
+    return result;
+  };
+
   // Reset to static defaults
   const resetAllProgress = () => {
     const defaults = storageService.resetToDefaults();
     setUser(defaults.user);
     setCourses(defaults.courses);
     setActiveCourseId('c-arch-spatial-001');
+    setSearchQuery('');
   };
 
   const value = {
@@ -93,6 +108,9 @@ export function AppProvider({ children }) {
     courses,
     activeCourse,
     setActiveCourseId,
+    searchQuery,
+    setSearchQuery,
+    enrollCourse,
     isBackendConnected,
     apiService,
     login,

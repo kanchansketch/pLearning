@@ -1,41 +1,43 @@
 /**
  * pLearning — Static Data Configuration
  *
- * All static data entities mapped from the pLearning domain model:
- * Course, Module, Lesson, Assignment, Submission, Evaluation, StudentProgress
+ * Rich educational curriculum mapped from the pLearning domain model:
+ * Courses, Modules, Lessons, Assignments, Submissions, Evaluations, StudentProgress.
  */
 
-// ── User Profiles (Mock static database) ──────────────────────
+// ── User Profiles ──────────────────────────────────────────────
 export const staticUsers = [
   {
     id: "student_alex",
     name: "Alex Mercer",
     email: "alex.mercer@plearning.edu",
     password: "password123",
-    avatar: "https://randomuser.me/api/portraits/men/12.jpg",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=faces&q=80",
     role: "learner",
-    streak: 12,
-    weeklyTargetHours: 4,
-    weeklyCompletedHours: 3,
+    streak: 14,
+    weeklyTargetHours: 5,
+    weeklyCompletedHours: 3.5,
     title: "Senior Architectural Apprentice",
+    enrolledCourseIds: ["c-arch-spatial-001", "c-cinema-003"],
   },
   {
     id: "teacher_marcus",
     name: "Marcus Vance",
     email: "marcus.vance@plearning.edu",
     password: "password123",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80",
     role: "teacher",
     streak: 45,
     weeklyTargetHours: 8,
     weeklyCompletedHours: 6,
     title: "Director of Learning, StudioLabs",
+    enrolledCourseIds: ["c-arch-spatial-001"],
   },
 ];
 
 export const currentUser = staticUsers[0];
 
-// ── Courses ───────────────────────────────────────────────────
+// ── Real Curriculum Courses ────────────────────────────────────
 export const courses = [
   {
     id: "c-arch-spatial-001",
@@ -44,170 +46,327 @@ export const courses = [
       "Master the delicate interplay between shadows, natural light beams, and concrete textures to craft premium atmospheres.",
     teacherId: "teacher_marcus",
     teacherName: "Marcus Vance",
+    teacherAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80",
     category: "Architecture",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
+    difficulty: "Advanced",
+    duration: "6.5 hours",
+    rating: 4.9,
+    enrolledCount: 1420,
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1000&q=80",
     isActive: true,
-    progress: 68,
-    completedLessons: 12,
-    totalLessons: 18,
+    isEnrolled: true,
     modules: [
       {
         id: "m-intro-001",
         courseId: "c-arch-spatial-001",
-        title: "Introduction to Spatial Design",
-        description: "Core spatial design principles and philosophy",
+        title: "1. Spatial Foundations & Volume",
+        description: "Core architectural spatial principles and human-scale perception",
         order: 1,
-        isCompleted: true,
         lessons: [
           {
-            id: "l-intro-001",
+            id: "l-arch-001",
             moduleId: "m-intro-001",
-            title: "Course Overview",
-            description: "An overview of spatial design principles",
-            content:
-              "Welcome to Architectural Spatial Mastery. In this course, you will learn the fundamentals of spatial design...",
-            contentUrl: "https://cdn.example.com/videos/intro-overview.mp4",
-            order: 1,
-            duration: "12 min",
-            type: "video",
-            isCompleted: true,
-            assignments: [],
-          },
-          {
-            id: "l-intro-002",
-            moduleId: "m-intro-001",
-            title: "Defining Spatial Philosophy",
-            description: "How spatial philosophy shapes architectural design",
-            content:
-              "Spatial philosophy explores the relationship between form, light, and human experience...",
-            contentUrl:
-              "https://cdn.example.com/videos/spatial-philosophy.mp4",
-            order: 2,
-            duration: "15 min",
-            type: "document",
-            isCompleted: true,
-            assignments: [],
-          },
-        ],
-      },
-      {
-        id: "m-light-003",
-        courseId: "c-arch-spatial-001",
-        title: "Lighting Foundations",
-        description: "Understand different types of light and shadows",
-        order: 3,
-        isCompleted: true,
-        lessons: [
-          {
-            id: "l-light-001",
-            moduleId: "m-light-003",
-            title: "Hard vs Soft Light",
-            description:
-              "Exploring the differences between hard and soft light sources",
-            content:
-              "Hard light creates sharp, defined shadows while soft light produces gentle, diffused illumination...",
-            contentUrl: "https://cdn.example.com/videos/hard-soft-light.mp4",
-            order: 1,
+            title: "1.1 The Anatomy of Space & Proportion",
+            description: "How structural boundaries define emotional responses in residential and public spaces.",
+            content: "Space is not a void waiting to be decorated; it is an active physical medium. In this foundational session, we examine how the ratio between ceiling height, floor width, and aperture placement governs psychological comfort and grandeur.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            poster: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
             duration: "14 min",
             type: "video",
             isCompleted: true,
-            assignments: [],
-          },
-          {
-            id: "l-light-002",
-            moduleId: "m-light-003",
-            title: "Shadows as Geometry",
-            description: "Using shadows as architectural design elements",
-            content:
-              "Shadows are not merely the absence of light — they are geometric tools...",
-            contentUrl:
-              "https://cdn.example.com/videos/shadows-geometry.mp4",
-            order: 2,
-            duration: "16 min",
-            type: "video",
-            isCompleted: true,
-            assignments: [],
-          },
-        ],
-      },
-      {
-        id: "m-moods-004",
-        courseId: "c-arch-spatial-001",
-        title: "Spatial Moods",
-        description:
-          "Advanced techniques for crafting mood through light and space",
-        order: 4,
-        isCompleted: false,
-        isActive: true,
-        lessons: [
-          {
-            id: "l-moods-001",
-            moduleId: "m-moods-004",
-            title: "Natural Light Beams",
-            description:
-              "Harnessing natural light beams for dramatic interior effect",
-            content:
-              "Natural light beams create dynamic visual patterns that shift throughout the day...",
-            contentUrl:
-              "https://cdn.example.com/videos/natural-light.mp4",
-            order: 1,
-            duration: "20 min",
-            type: "video",
-            isCompleted: true,
-            assignments: [],
-          },
-          {
-            id: "l-moods-002",
-            moduleId: "m-moods-004",
-            title: "Advanced Lighting & Moods",
-            description:
-              "In this lesson, we break down the practical application of directional light cones and soft bounce angles to define interior volume, using raw concrete backdrops.",
-            content:
-              "This session covers the architectural lighting style seen in premium gallery design. By arranging high-contrast lighting sources, we create depth and focus on the natural textures of building elements.",
-            contentUrl:
-              "https://cdn.example.com/videos/advanced-lighting.mp4",
-            contentImage:
-              "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
-            order: 2,
-            duration: "18 min",
-            type: "video",
-            isCompleted: false,
-            isActive: true,
+            isLocked: false,
             keyTakeaways: [
-              "Understanding bounce ratios off matte vs polished surfaces.",
-              "Setting up artificial light arrays to simulate natural sunbeams.",
-              "Controlling shadow density to emphasize architectural volume.",
+              "The Golden Section ratio applied to volumetric wall divisions.",
+              "Compression and release techniques in transition hallways.",
+              "Sightline orchestration from entryway to primary focal points.",
             ],
             assignments: [
               {
-                id: "a-moods-001",
-                lessonId: "l-moods-002",
-                title: "Lighting Mood Board Assignment",
-                description:
-                  "Create a mood board using directional lighting techniques from the lesson",
+                id: "a-arch-001",
+                lessonId: "l-arch-001",
+                title: "Scale & Sightline Analysis",
+                description: "Map the primary sightline and compression sequence for a 120m² gallery space.",
                 questions: [
-                  "How does the angle of directional light affect the mood of a concrete interior?",
-                  "Describe three scenarios where soft bounce light would be preferred over direct lighting.",
+                  "What geometric ratio creates the most balanced spatial perception between width and ceiling height?",
+                  "Define the compression-release threshold in architectural entryways.",
                 ],
               },
             ],
           },
           {
-            id: "l-moods-003",
-            moduleId: "m-moods-004",
-            title: "Shadows & Textures",
-            description:
-              "Combining shadow play with material textures for depth",
-            content:
-              "The interplay between shadows and material textures creates visual depth...",
-            contentUrl:
-              "https://cdn.example.com/videos/shadows-textures.mp4",
-            order: 3,
+            id: "l-arch-002",
+            moduleId: "m-intro-001",
+            title: "1.2 Materiality: Raw Concrete & Monoliths",
+            description: "Understanding formwork textures, board-marked finishes, and thermal mass.",
+            content: "Raw concrete carries an honest monumental permanence. We examine how aggregate grain sizes, formwork tie-holes, and hydration curing times alter light reflectance across board-formed walls.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            poster: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&q=80",
+            duration: "18 min",
+            type: "video",
+            isCompleted: true,
+            isLocked: false,
+            keyTakeaways: [
+              "Board-formed grain depth vs polished microcement finishes.",
+              "Acoustic damping strategies in monolithic open-plan layouts.",
+              "Formwork seams as intentional architectural datum lines.",
+            ],
+            assignments: [],
+          },
+        ],
+      },
+      {
+        id: "m-light-002",
+        courseId: "c-arch-spatial-001",
+        title: "2. Natural Light Geometry",
+        description: "Harnessing solar altitude, directional slits, and diffused skylights",
+        order: 2,
+        lessons: [
+          {
+            id: "l-arch-003",
+            moduleId: "m-light-002",
+            title: "2.1 Directional Solar Slits & Clerestories",
+            description: "Carving light channels into thick masonry walls to track daytime progression.",
+            content: "Directional light beams create a moving sundial within interior enclosures. By angling clerestory apertures at 38 degrees, we can funnel morning daylight without causing afternoon glare.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            poster: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
+            duration: "20 min",
+            type: "video",
+            isCompleted: true,
+            isLocked: false,
+            keyTakeaways: [
+              "Calculating solar zenith angles for seasonal daylighting.",
+              "Deep-set window reveals that soften sharp shadow transitions.",
+              "Reflected clerestory illumination against textured ceilings.",
+            ],
+            assignments: [],
+          },
+          {
+            id: "l-arch-004",
+            moduleId: "m-light-002",
+            title: "2.2 The Physics of Soft Bounce & Ambient Gradients",
+            description: "Preventing harsh hot-spots through secondary bounce surfaces and baffles.",
+            content: "Direct sunlight can wash out subtle materials. Using limestone flooring as an intentional bounce reflector redistributes lumens upward, creating warm, velvety ambient gradients.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+            poster: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
+            duration: "16 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: false,
+            keyTakeaways: [
+              "Albedo reflectance indices of architectural stone vs raw wood.",
+              "Diffuser baffle placement in overhead skylight shafts.",
+              "Balancing lumen contrast ratios between primary and perimeter zones.",
+            ],
+            assignments: [],
+          },
+        ],
+      },
+      {
+        id: "m-moods-003",
+        courseId: "c-arch-spatial-001",
+        title: "3. Advanced Architectural Lighting & Moods",
+        description: "Techniques for dramatic interior volume using controlled artificial illumination",
+        order: 3,
+        lessons: [
+          {
+            id: "l-arch-005",
+            moduleId: "m-moods-003",
+            title: "3.1 Directional Light Cones & Accent Volumetrics",
+            description: "Setting up 2700K narrow-beam spots to sculpt brutalist columns and staircases.",
+            content: "In this practical lesson, we break down narrow-cone spotlights (15° to 24°) aimed at brushed concrete columns. By controlling beam spill with honeycomb snoots, we emphasize texture while maintaining atmospheric darkness.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+            poster: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&q=80",
             duration: "22 min",
             type: "video",
             isCompleted: false,
             isLocked: true,
+            keyTakeaways: [
+              "Honeycomb louvers and snoots for glare-free architectural grazing.",
+              "Color rendering index (CRI 98+) considerations for mineral surfaces.",
+              "Concealed cove illumination providing zero-fixture indirect glow.",
+            ],
+            assignments: [
+              {
+                id: "a-arch-002",
+                lessonId: "l-arch-005",
+                title: "Lighting Mood Board & Fixture Schedule",
+                description: "Design an artificial lighting plan for a two-story atrium highlighting board-formed concrete.",
+                questions: [
+                  "Why is a 15-degree beam spread preferred over a 60-degree flood for column texture grazing?",
+                  "Explain how correlated color temperature (CCT) affects perceived concrete warmth.",
+                ],
+              },
+            ],
+          },
+          {
+            id: "l-arch-006",
+            moduleId: "m-moods-003",
+            title: "3.2 Shadows as Structural Geometry",
+            description: "Designing positive and negative space through deliberate darkness and cast silhouettes.",
+            content: "Shadow is not the absence of thought; it is the frame through which illumination reveals itself. Discover how louvers and brise-soleil cast dynamic calligraphic shadows across floors.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+            poster: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&q=80",
+            duration: "19 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: true,
+            keyTakeaways: [
+              "Brise-soleil shadow patterns tracking diurnal rhythms.",
+              "Negative fill zones creating sanctuary in residential master suites.",
+              "Integration of emergency night lighting without breaking spatial mood.",
+            ],
+            assignments: [],
+          },
+        ],
+      },
+      {
+        id: "m-capstone-004",
+        courseId: "c-arch-spatial-001",
+        title: "4. Capstone Project & Peer Review",
+        description: "Synthesizing volume, material, daylight, and artificial mood in a studio portfolio piece",
+        order: 4,
+        lessons: [
+          {
+            id: "l-arch-007",
+            moduleId: "m-capstone-004",
+            title: "4.1 The Pavilion Design Brief",
+            description: "Final walkthrough of constraints, site parameters, and deliverable specifications.",
+            content: "Construct a comprehensive 3D or drafted study of a 200m² meditation pavilion utilizing brutalist concrete, water reflections, and singular directional sunlight channels.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4",
+            poster: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+            duration: "25 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: true,
+            keyTakeaways: [
+              "Site plan orientation relative to solstice azimuth paths.",
+              "Integrating water reflection pools for shimmering ceiling caustics.",
+              "Preparing professional submission boards with lux level annotations.",
+            ],
+            assignments: [
+              {
+                id: "a-arch-003",
+                lessonId: "l-arch-007",
+                title: "Pavilion Studio Portfolio Submission",
+                description: "Submit your final high-resolution renders, daylight simulations, and written design rationale.",
+                questions: [
+                  "Detail your calculation of bounce lux levels throughout the winter vs summer solstice.",
+                  "Provide the architectural rationale behind your selection of raw vs polished materials.",
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "c-cinema-003",
+    title: "Cinematography Foundations: Light & Lenses",
+    description:
+      "An in-depth study of focal lengths, camera movement, and painting with light to build dramatic cinematic narratives.",
+    teacherId: "teacher_roger",
+    teacherName: "Roger Deakins, ASC",
+    teacherAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces&q=80",
+    category: "Cinematography",
+    difficulty: "Intermediate",
+    duration: "5.0 hours",
+    rating: 4.95,
+    enrolledCount: 2890,
+    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1000&q=80",
+    isActive: false,
+    isEnrolled: true,
+    modules: [
+      {
+        id: "m-optics-001",
+        courseId: "c-cinema-003",
+        title: "1. The Optics of Emotion",
+        description: "Focal length selection, field of view, and psychological compression",
+        order: 1,
+        lessons: [
+          {
+            id: "l-cin-001",
+            moduleId: "m-optics-001",
+            title: "1.1 Focal Lengths & Perspective Distortion",
+            description: "Comparing 28mm wide immersion against 85mm portrait telephoto isolation.",
+            content: "Lenses are not neutral glass; they alter the psychological intimacy of the spectator. A wide angle pulls the viewer directly into the physical environment, whereas a long lens compresses distances and isolates character emotion.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            poster: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1200&q=80",
+            duration: "16 min",
+            type: "video",
+            isCompleted: true,
+            isLocked: false,
+            keyTakeaways: [
+              "Barrel distortion vs telephoto plane flattening.",
+              "Depth of field relationship with T-stop and sensor size.",
+              "Choosing prime lenses to establish consistent visual grammar.",
+            ],
+            assignments: [],
+          },
+          {
+            id: "l-cin-002",
+            moduleId: "m-optics-001",
+            title: "1.2 Sensor Sizes, Formats & Anamorphic Squeeze",
+            description: "Super 35mm vs Large Format VistaVision, oval bokeh, and horizontal flare streaks.",
+            content: "Large format cinema sensors deliver gentler focus falloff and wider field-of-view for equivalent focal lengths. We break down the characteristic look of 2x anamorphic cylindrical elements.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&q=80",
+            duration: "21 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: false,
+            keyTakeaways: [
+              "Crop factor math and equivalence across sensor families.",
+              "Anamorphic desqueeze ratios in post-production pipelines.",
+              "Vintage spherical glass vs clinical modern multicoated glass.",
+            ],
+            assignments: [],
+          },
+        ],
+      },
+      {
+        id: "m-lighting-002",
+        courseId: "c-cinema-003",
+        title: "2. Motivated Lighting Ratios",
+        description: "Painting scenes with key, fill, kicker, and negative fill contrast",
+        order: 2,
+        lessons: [
+          {
+            id: "l-cin-003",
+            moduleId: "m-lighting-002",
+            title: "2.1 The Concept of Motivated Source Light",
+            description: "Establishing believable in-world sources: practical lamps, windows, and moonlight.",
+            content: "Every cinematic light must feel as though it belongs to the physical diegesis of the room. We examine how to hide large softboxes outside practical window frames to elevate scene realism.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            poster: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1200&q=80",
+            duration: "19 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: true,
+            keyTakeaways: [
+              "Practical bulbs matched to tungsten or daylight spectrums.",
+              "Controlling contrast ratios (8:1 vs 2:1) for tone and genre.",
+              "Unbleached muslin and grid diffusion techniques.",
+            ],
+            assignments: [],
+          },
+          {
+            id: "l-cin-004",
+            moduleId: "m-lighting-002",
+            title: "2.2 Negative Fill & The Dark Side of the Face",
+            description: "Using black solid duvetyne to absorb ambient bounce and sculpt cinematic cheekbones.",
+            content: "Great lighting is often about where you remove light. Introducing 8x8 black flags opposite the key light increases contrast and gives character portraits profound dramatic depth.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+            poster: "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=1200&q=80",
+            duration: "15 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: true,
+            keyTakeaways: [
+              "Duvetyne flag positioning relative to subject eyeline.",
+              "Catchlights in character pupils as an emotional anchor.",
+              "Grading shadows on ACES color management systems.",
+            ],
             assignments: [],
           },
         ],
@@ -219,84 +378,257 @@ export const courses = [
     title: "Creative Non-Fiction: Finding Your Voice",
     description:
       "Learn editorial prose techniques, narrative hooks, and how to tell true stories with maximum narrative impact.",
-    teacherId: "teacher_joan",
-    teacherName: "Joan Didion & Malcolm Gladwell",
+    teacherId: "teacher_elena",
+    teacherName: "Elena Rostova",
+    teacherAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=faces&q=80",
     category: "Writing",
-    image:
-      "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80",
+    difficulty: "All Levels",
+    duration: "4.2 hours",
+    rating: 4.88,
+    enrolledCount: 1840,
+    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1000&q=80",
     isActive: false,
-    progress: 40,
-    completedLessons: 4,
-    totalLessons: 10,
-    modules: [],
+    isEnrolled: false,
+    modules: [
+      {
+        id: "m-voice-001",
+        courseId: "c-writing-002",
+        title: "1. The Architecture of True Stories",
+        description: "Transforming personal memory and journalism into vivid literary narratives",
+        order: 1,
+        lessons: [
+          {
+            id: "l-wri-001",
+            moduleId: "m-voice-001",
+            title: "1.1 The Hook: Entering In Media Res",
+            description: "Crafting magnetic first sentences that immediately establish stakes and tone.",
+            content: "Never begin with the weather or an alarm clock. Begin at the precise moment the world cracked open. In this lesson, we study opening paragraphs from Didion, Capote, and Baldwin to deconstruct narrative entry velocity.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+            poster: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80",
+            duration: "15 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: false,
+            keyTakeaways: [
+              "Avoiding throat-clearing exposition in chapter leads.",
+              "Establishing narrative contract with the reader within 50 words.",
+              "Sentence rhythm: alternating monosyllabic punches with flowing cadences.",
+            ],
+            assignments: [
+              {
+                id: "a-wri-001",
+                lessonId: "l-wri-001",
+                title: "Opening Paragraph Workshop",
+                description: "Write three distinct opening hooks for a memoir piece based on a pivotal turning point.",
+                questions: [
+                  "Which opening variant creates the strongest emotional curiosity without confusing the reader?",
+                  "Identify any passive voice constructions and rewrite them into dynamic action verbs.",
+                ],
+              },
+            ],
+          },
+          {
+            id: "l-wri-002",
+            moduleId: "m-voice-001",
+            title: "1.2 The Precision of Micro-Details",
+            description: "Replacing generic adjectives with sensory, concrete nouns and observations.",
+            content: "A yellow car is forgettable. A sun-faded lemon-yellow 1984 Volvo with a rusted wheel well and an unspooled cassette on the floorboard tells an entire human history.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+            poster: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=1200&q=80",
+            duration: "18 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: true,
+            keyTakeaways: [
+              "Sensory grounding through smell, texture, and auditory markers.",
+              "The objective correlative: finding external objects that mirror internal grief or joy.",
+              "Pruning qualifying adverbs ('very', 'really', 'suddenly') to tighten prose pace.",
+            ],
+            assignments: [],
+          },
+        ],
+      },
+      {
+        id: "m-ethics-002",
+        courseId: "c-writing-002",
+        title: "2. The Ethics of Personal Storytelling",
+        description: "Navigating living subjects, family memory, and the fallibility of recall",
+        order: 2,
+        lessons: [
+          {
+            id: "l-wri-003",
+            moduleId: "m-ethics-002",
+            title: "2.1 Fact vs Emotional Truth",
+            description: "How to transparently acknowledge memory gaps while honoring factual accuracy.",
+            content: "Memory is not a video recording; it is an interpretive mosaic. Learn how literary essayists signal uncertainty to build profound trust with their audience.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+            poster: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80",
+            duration: "20 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: true,
+            keyTakeaways: [
+              "Disclosing the reconstructive nature of dialogue.",
+              "Fact-checking personal essays against journals and public archives.",
+              "Handling sensitive family revelations with journalistic dignity.",
+            ],
+            assignments: [],
+          },
+        ],
+      },
+    ],
   },
   {
-    id: "c-cinema-003",
-    title: "Cinematography Foundations: Light & Lenses",
+    id: "c-fullstack-004",
+    title: "Full-Stack Web Engineering with FastAPI & React",
     description:
-      "An in-depth study of focal lengths, camera movement, and painting with light to build dramatic cinematic narratives.",
-    teacherId: "teacher_roger",
-    teacherName: "Roger Deakins, ASC",
-    category: "Cinematography",
-    image: null, // Uses gradient placeholder
+      "Build production-grade applications using Clean Domain-Driven Design, SQLAlchemy 2.0 Async, Vite, and Tailwind CSS.",
+    teacherId: "teacher_sarah",
+    teacherName: "Sarah Lin",
+    teacherAvatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces&q=80",
+    category: "Engineering",
+    difficulty: "Intermediate",
+    duration: "8.0 hours",
+    rating: 4.97,
+    enrolledCount: 3410,
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1000&q=80",
     isActive: false,
-    progress: 90,
-    completedLessons: 18,
-    totalLessons: 20,
-    modules: [],
+    isEnrolled: false,
+    modules: [
+      {
+        id: "m-ddd-001",
+        courseId: "c-fullstack-004",
+        title: "1. Clean Domain-Driven Design (DDD)",
+        description: "Zero external dependencies in domain entities, aggregate consistency roots, and value objects",
+        order: 1,
+        lessons: [
+          {
+            id: "l-dev-001",
+            moduleId: "m-ddd-001",
+            title: "1.1 Aggregate Roots & Consistency Boundaries",
+            description: "Designing the Course aggregate root so child entities cannot be mutated out-of-order.",
+            content: "In Clean DDD, domain invariants are enforced exclusively through the Aggregate Root. We construct Python dataclasses where sub-entities (Modules, Lessons) have no direct repository access.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            poster: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80",
+            duration: "24 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: false,
+            keyTakeaways: [
+              "Zero-dependency rule: no FastAPI or SQLAlchemy inside domain packages.",
+              "Strongly-typed IDs using UUID wrappers to prevent identity bugs.",
+              "Re-ordering algorithms enforcing sequential order values.",
+            ],
+            assignments: [
+              {
+                id: "a-dev-001",
+                lessonId: "l-dev-001",
+                title: "Aggregate Invariant Implementation",
+                description: "Implement a Lesson aggregate invariant that prevents empty titles and duplicate orders.",
+                questions: [
+                  "Why should repository methods only load and save the Aggregate Root rather than child entities?",
+                  "Explain how Python's dataclass __post_init__ is used for domain validation.",
+                ],
+              },
+            ],
+          },
+          {
+            id: "l-dev-002",
+            moduleId: "m-ddd-001",
+            title: "1.2 Application Services & Read/Write DTOs",
+            description: "Decoupling domain models from API schemas using immutable dataclass transfer objects.",
+            content: "Application services orchestrate use cases without knowing about HTTP or databases. We construct command DTOs and frozen read DTOs.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            poster: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&q=80",
+            duration: "22 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: true,
+            keyTakeaways: [
+              "Write model commands vs Read model projections.",
+              "Unit testing application services with In-Memory repository doubles.",
+              "Domain exceptions mapped to HTTP error codes at the interface layer.",
+            ],
+            assignments: [],
+          },
+        ],
+      },
+      {
+        id: "m-fastapi-002",
+        courseId: "c-fullstack-004",
+        title: "2. Async SQLAlchemy 2.0 & FastAPI Interface",
+        description: "Non-blocking database operations, lifespan management, and Pydantic v2 validation",
+        order: 2,
+        lessons: [
+          {
+            id: "l-dev-003",
+            moduleId: "m-fastapi-002",
+            title: "2.1 SQLAlchemy 2.0 Async Persistence",
+            description: "AsyncSession, select() statements, relationship cascade deletes, and migrations.",
+            content: "Learn how to wire aiosqlite and asyncpg using the modern declarative Base with Mapped and mapped_column typings.",
+            contentUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            poster: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80",
+            duration: "26 min",
+            type: "video",
+            isCompleted: false,
+            isLocked: true,
+            keyTakeaways: [
+              "Async engine configuration with expire_on_commit=False.",
+              "Handling JSON serialization in SQLite columns.",
+              "FastAPI lifespan context manager for seamless schema initialization.",
+            ],
+            assignments: [],
+          },
+        ],
+      },
+    ],
   },
 ];
 
 // ── Learning Streak Data ──────────────────────────────────────
 export const streakData = {
   month: "October",
-  year: 2024,
-  activeDays: [1, 2, 3, 4, 7, 8, 9, 10, 11, 12],
+  year: 2026,
+  activeDays: [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13],
   totalDays: 31,
-  startDayOffset: 1, // Month starts on Tuesday (0=Mon)
+  startDayOffset: 3,
 };
 
 // ── Badges / Achievements ─────────────────────────────────────
 export const badges = [
   {
     id: "badge-consistent",
-    title: "Consistent Architect",
-    description: "Active 10 consecutive days",
+    title: "14-Day Streak",
+    description: "Active 14 consecutive days",
     icon: "zap",
+  },
+  {
+    id: "badge-spatial",
+    title: "Spatial Pioneer",
+    description: "Completed Foundations Module",
+    icon: "award",
+  },
+  {
+    id: "badge-critic",
+    title: "Peer Critic",
+    description: "Submitted 3 assignments",
+    icon: "star",
   },
 ];
 
 // ── Testimonial ───────────────────────────────────────────────
 export const testimonial = {
   quote:
-    '"An absolute masterclass in distraction-free educational design."',
+    '"The cleanest, most distraction-free educational architecture I have ever seen."',
   author: "Marcus Vance",
   role: "Director of Learning, StudioLabs",
-  avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+  avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80",
 };
 
 // ── Navigation Items ──────────────────────────────────────────
 export const sidebarNavItems = [
   { id: "dashboard", label: "Dashboard", icon: "LayoutDashboard", path: "/dashboard" },
-  { id: "courses", label: "My Courses", icon: "BookOpen", path: "/classroom" },
-  { id: "discover", label: "Discover", icon: "Globe", path: "#" },
-  { id: "analytics", label: "Analytics", icon: "Activity", path: "#" },
+  { id: "courses", label: "My Classroom", icon: "BookOpen", path: "/classroom" },
+  { id: "discover", label: "Explore Courses", icon: "Globe", path: "/dashboard?tab=explore" },
+  { id: "analytics", label: "Analytics", icon: "Activity", path: "/dashboard?tab=analytics" },
 ];
-
-// Helper: Get active course
-export const getActiveCourse = () => courses.find((c) => c.isActive);
-
-// Helper: Get active lesson from active course
-export const getActiveLesson = () => {
-  const course = getActiveCourse();
-  if (!course) return null;
-  for (const mod of course.modules) {
-    for (const lesson of mod.lessons) {
-      if (lesson.isActive) return { ...lesson, module: mod, course };
-    }
-  }
-  return null;
-};
-
-// Helper: Get enrolled (non-active) courses
-export const getEnrolledCourses = () => courses.filter((c) => !c.isActive);

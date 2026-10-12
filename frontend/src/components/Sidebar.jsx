@@ -61,27 +61,17 @@ export default function Sidebar() {
               }`
             }
           >
-            <BookOpen className="w-4 h-4" />
-            <span>My Courses</span>
+            <BookOpen className="w-4 h-4 text-primary" />
+            <span>Classroom</span>
           </NavLink>
 
-          <a
-            href="#discover"
-            onClick={(e) => e.preventDefault()}
-            className="flex items-center gap-3 px-3.5 py-2.5 text-muted-foreground hover:text-foreground hover:bg-muted font-medium rounded-xl text-sm transition-colors"
+          <button
+            onClick={() => navigate('/dashboard?tab=explore')}
+            className="w-full flex items-center gap-3 px-3.5 py-2.5 text-muted-foreground hover:text-foreground hover:bg-muted font-medium rounded-xl text-sm transition-colors text-left cursor-pointer"
           >
-            <Globe className="w-4 h-4" />
-            <span>Discover</span>
-          </a>
-
-          <a
-            href="#analytics"
-            onClick={(e) => e.preventDefault()}
-            className="flex items-center gap-3 px-3.5 py-2.5 text-muted-foreground hover:text-foreground hover:bg-muted font-medium rounded-xl text-sm transition-colors"
-          >
-            <Activity className="w-4 h-4" />
-            <span>Analytics</span>
-          </a>
+            <Globe className="w-4 h-4 text-primary" />
+            <span>Explore Catalog</span>
+          </button>
         </nav>
       </div>
 
