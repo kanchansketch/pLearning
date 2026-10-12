@@ -1,0 +1,518 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;family=Fira+Code:wght@300..700&amp;family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link id="theme-fonts" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <style type="text/tailwindcss">
+      @import "tailwindcss";
+      @theme inline {
+        --color-background: var(--background);
+        --color-foreground: var(--foreground);
+        --color-primary: var(--primary);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-secondary: var(--secondary);
+        --color-secondary-foreground: var(--secondary-foreground);
+        --color-tertiary: var(--tertiary);
+        --color-tertiary-foreground: var(--tertiary-foreground);
+        --color-muted: var(--muted);
+        --color-muted-foreground: var(--muted-foreground);
+        --color-accent: var(--accent);
+        --color-accent-foreground: var(--accent-foreground);
+        --color-destructive: var(--destructive);
+        --color-destructive-foreground: var(--destructive-foreground);
+        --color-card: var(--card);
+        --color-card-foreground: var(--card-foreground);
+        --color-popover: var(--popover);
+        --color-popover-foreground: var(--popover-foreground);
+        --color-border: var(--border);
+        --color-input: var(--input);
+        --color-ring: var(--ring);
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --font-family-sans: var(--font-sans);
+        --font-family-heading: var(--font-heading);
+        --font-family-mono: var(--font-mono);
+        /* Tailwind v4's font namespace is --font-*, NOT --font-family-*.
+         *
+         * Without this line the font-heading utility does not exist at all,
+         * so every h1–h6 the design prompt mandates (font-heading) silently
+         * inherited the body's font-sans. A user could set --font-heading a
+         * dozen times, watch the tool report success, and never see the
+         * typeface change — the "font applied but not reflected" report.
+         *
+         * font-sans and font-mono are Tailwind built-ins and already read
+         * :root, which is why only headings were broken. The fallback chain
+         * keeps themes that never set a heading font rendering the body face
+         * instead of nothing. */
+        --font-heading: var(--font-heading, var(--font-sans, ui-sans-serif, system-ui, sans-serif));
+      }
+
+      /* Every filled surface carries its own text colour.
+       *
+       * Without this, <div class="bg-accent"> inherits --foreground from
+       * <html> — a colour chosen to contrast the PAGE, not the accent fill. On
+       * a dark theme with a bright accent that renders near-white text on
+       * near-white (or near-black on near-black): the invisible text users
+       * report. Pairing each fill with its own foreground makes the readable
+       * result the default instead of something the model has to remember.
+       *
+       * These sit in @layer base deliberately. Any explicit text-* utility is
+       * in @layer utilities and therefore still wins, so an intentional colour
+       * choice is never overridden. The neutral surfaces (background, muted)
+       * are left out: --foreground is already guaranteed readable on those, and
+       * forcing --muted-foreground would wash out headings in muted panels.
+       */
+      @layer base {
+        .bg-card { color: var(--card-foreground); }
+        .bg-popover { color: var(--popover-foreground, var(--card-foreground)); }
+        .bg-primary { color: var(--primary-foreground); }
+        .bg-secondary { color: var(--secondary-foreground); }
+        .bg-accent { color: var(--accent-foreground, var(--foreground)); }
+        .bg-tertiary { color: var(--tertiary-foreground, var(--primary-foreground)); }
+        .bg-destructive { color: var(--destructive-foreground, var(--primary-foreground)); }
+      }
+      :root { --background: #F9FAFB;
+        --foreground: #111827;
+        --primary: #4F46E5;
+        --primary-foreground: #FFFFFF;
+        --secondary: #EEF2FF;
+        --secondary-foreground: #312E81;
+        --tertiary: #10B981;
+        --muted: #F3F4F6;
+        --muted-foreground: #6B7280;
+        --accent: #ECFDF5;
+        --accent-foreground: #065F46;
+        --card: #FFFFFF;
+        --card-foreground: #111827;
+        --destructive: #DC2626;
+        --border: #E5E7EB;
+        --input: #D1D5DB;
+        --ring: #4F46E5;
+        --radius: 0.875rem;
+        --font-sans: Inter,ui-sans-serif,system-ui,sans-serif;
+        --font-heading: Inter,ui-sans-serif,system-ui,sans-serif;
+        --font-mono: JetBrains Mono, monospace;
+        --shadow-offset-x: 0;
+        --shadow-offset-y: 10;
+        --shadow-blur: 30;
+        --shadow-spread: -8;
+        --shadow-color: rgba(15, 23, 42, 0.12);
+        --tertiary-foreground: #393939;
+        --destructive-foreground: #FFFFFF;
+        --secondary-text: #70737F;
+        --accent-text: #687770;
+        --destructive-text: #DC2626; }
+    </style>
+    <style>
+      .brand-gradient { background-image: linear-gradient(135deg, var(--primary), var(--accent)); }
+      .shadow-theme {
+        box-shadow:
+          calc(var(--shadow-offset-x, 0) * 1px) calc(var(--shadow-offset-y, 10) * 1px)
+          calc(var(--shadow-blur, 30) * 1px) calc(var(--shadow-spread, -8) * 1px)
+          var(--shadow-color, rgba(15, 23, 42, 0.12));
+      }
+
+      /* Brand colours used as TEXT resolve to a legibility-adjusted variant.
+       *
+       * --primary and friends are tuned to look right as FILLS; painted as text
+       * on the page they are routinely too light — a #16A34A "+8.4%" on a white
+       * card measures 3.3:1. The --*-text tokens are the same hue and chroma
+       * with lightness nudged just far enough to clear AA on the page and card
+       * surfaces, so fills keep the exact brand colour while text becomes
+       * readable.
+       *
+       * This block is intentionally UNLAYERED: unlayered declarations outrank
+       * every cascade layer, so these beat Tailwind's own text-* utilities. The
+       * var() fallbacks leave documents that predate the derived tokens
+       * rendering exactly as before.
+       */
+      .text-primary { color: var(--primary-text, var(--primary)); }
+      .text-secondary { color: var(--secondary-text, var(--secondary)); }
+      .text-tertiary { color: var(--tertiary-text, var(--tertiary)); }
+      .text-accent { color: var(--accent-text, var(--accent)); }
+      .text-destructive { color: var(--destructive-text, var(--destructive)); }
+    </style>
+  </head>
+  <body>
+
+
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;family=Fira+Code:wght@300..700&amp;family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link id="theme-fonts" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <style type="text/tailwindcss">
+      @import "tailwindcss";
+      @theme inline {
+        --color-background: var(--background);
+        --color-foreground: var(--foreground);
+        --color-primary: var(--primary);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-secondary: var(--secondary);
+        --color-secondary-foreground: var(--secondary-foreground);
+        --color-tertiary: var(--tertiary);
+        --color-tertiary-foreground: var(--tertiary-foreground);
+        --color-muted: var(--muted);
+        --color-muted-foreground: var(--muted-foreground);
+        --color-accent: var(--accent);
+        --color-accent-foreground: var(--accent-foreground);
+        --color-destructive: var(--destructive);
+        --color-destructive-foreground: var(--destructive-foreground);
+        --color-card: var(--card);
+        --color-card-foreground: var(--card-foreground);
+        --color-popover: var(--popover);
+        --color-popover-foreground: var(--popover-foreground);
+        --color-border: var(--border);
+        --color-input: var(--input);
+        --color-ring: var(--ring);
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --font-family-sans: var(--font-sans);
+        --font-family-heading: var(--font-heading);
+        --font-family-mono: var(--font-mono);
+        /* Tailwind v4's font namespace is --font-*, NOT --font-family-*.
+         *
+         * Without this line the font-heading utility does not exist at all,
+         * so every h1–h6 the design prompt mandates (font-heading) silently
+         * inherited the body's font-sans. A user could set --font-heading a
+         * dozen times, watch the tool report success, and never see the
+         * typeface change — the "font applied but not reflected" report.
+         *
+         * font-sans and font-mono are Tailwind built-ins and already read
+         * :root, which is why only headings were broken. The fallback chain
+         * keeps themes that never set a heading font rendering the body face
+         * instead of nothing. */
+        --font-heading: var(--font-heading, var(--font-sans, ui-sans-serif, system-ui, sans-serif));
+      }
+
+      /* Every filled surface carries its own text colour.
+       *
+       * Without this, <div class="bg-accent"> inherits --foreground from
+       * <html> — a colour chosen to contrast the PAGE, not the accent fill. On
+       * a dark theme with a bright accent that renders near-white text on
+       * near-white (or near-black on near-black): the invisible text users
+       * report. Pairing each fill with its own foreground makes the readable
+       * result the default instead of something the model has to remember.
+       *
+       * These sit in @layer base deliberately. Any explicit text-* utility is
+       * in @layer utilities and therefore still wins, so an intentional colour
+       * choice is never overridden. The neutral surfaces (background, muted)
+       * are left out: --foreground is already guaranteed readable on those, and
+       * forcing --muted-foreground would wash out headings in muted panels.
+       */
+      @layer base {
+        .bg-card { color: var(--card-foreground); }
+        .bg-popover { color: var(--popover-foreground, var(--card-foreground)); }
+        .bg-primary { color: var(--primary-foreground); }
+        .bg-secondary { color: var(--secondary-foreground); }
+        .bg-accent { color: var(--accent-foreground, var(--foreground)); }
+        .bg-tertiary { color: var(--tertiary-foreground, var(--primary-foreground)); }
+        .bg-destructive { color: var(--destructive-foreground, var(--primary-foreground)); }
+      }
+      :root { --background: #F9FAFB;
+        --foreground: #111827;
+        --primary: #4F46E5;
+        --primary-foreground: #FFFFFF;
+        --secondary: #EEF2FF;
+        --secondary-foreground: #312E81;
+        --tertiary: #10B981;
+        --muted: #F3F4F6;
+        --muted-foreground: #6B7280;
+        --accent: #ECFDF5;
+        --accent-foreground: #065F46;
+        --card: #FFFFFF;
+        --card-foreground: #111827;
+        --destructive: #DC2626;
+        --border: #E5E7EB;
+        --input: #D1D5DB;
+        --ring: #4F46E5;
+        --radius: 0.875rem;
+        --font-sans: Inter,ui-sans-serif,system-ui,sans-serif;
+        --font-heading: Inter,ui-sans-serif,system-ui,sans-serif;
+        --font-mono: JetBrains Mono, monospace;
+        --shadow-offset-x: 0;
+        --shadow-offset-y: 10;
+        --shadow-blur: 30;
+        --shadow-spread: -8;
+        --shadow-color: rgba(15, 23, 42, 0.12);
+        --tertiary-foreground: #393939;
+        --destructive-foreground: #FFFFFF;
+        --secondary-text: #70737F;
+        --accent-text: #687770;
+        --destructive-text: #DC2626; }
+    </style>
+    <style>
+      .brand-gradient { background-image: linear-gradient(135deg, var(--primary), var(--accent)); }
+      .shadow-theme {
+        box-shadow:
+          calc(var(--shadow-offset-x, 0) * 1px) calc(var(--shadow-offset-y, 10) * 1px)
+          calc(var(--shadow-blur, 30) * 1px) calc(var(--shadow-spread, -8) * 1px)
+          var(--shadow-color, rgba(15, 23, 42, 0.12));
+      }
+
+      /* Brand colours used as TEXT resolve to a legibility-adjusted variant.
+       *
+       * --primary and friends are tuned to look right as FILLS; painted as text
+       * on the page they are routinely too light — a #16A34A "+8.4%" on a white
+       * card measures 3.3:1. The --*-text tokens are the same hue and chroma
+       * with lightness nudged just far enough to clear AA on the page and card
+       * surfaces, so fills keep the exact brand colour while text becomes
+       * readable.
+       *
+       * This block is intentionally UNLAYERED: unlayered declarations outrank
+       * every cascade layer, so these beat Tailwind's own text-* utilities. The
+       * var() fallbacks leave documents that predate the derived tokens
+       * rendering exactly as before.
+       */
+      .text-primary { color: var(--primary-text, var(--primary)); }
+      .text-secondary { color: var(--secondary-text, var(--secondary)); }
+      .text-tertiary { color: var(--tertiary-text, var(--tertiary)); }
+      .text-accent { color: var(--accent-text, var(--accent)); }
+      .text-destructive { color: var(--destructive-text, var(--destructive)); }
+    </style>
+  
+  
+<div class="min-h-screen w-full bg-background flex flex-col relative">
+  
+  <!-- Top Navigation Bar -->
+  <header class="bg-card border-b border-border px-6 py-4 flex items-center justify-between z-10">
+    <div class="flex items-center gap-4">
+      <a href="#" data-uxm-link="Learner dashboard" class="flex items-center gap-2 text-muted-foreground hover:text-foreground font-medium text-sm transition-colors" data-uxm-link-frame="6acd1190ee237268aa4ea1bd">
+        <iconify-icon icon="lucide:arrow-left" class="text-lg"></iconify-icon>
+        <span>Back to Dashboard</span>
+      </a>
+      <div class="h-4 w-px bg-border"></div>
+      <span class="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Architectural Spatial Mastery</span>
+    </div>
+    
+    <!-- Overall Course Progress -->
+    <div class="flex items-center gap-4">
+      <div class="hidden md:flex flex-col items-end">
+        <span class="text-xs font-semibold text-foreground" id="progress-text">Course progress: 68%</span>
+        <span class="text-[10px] text-muted-foreground">12 of 18 lessons completed</span>
+      </div>
+      <div class="w-32 bg-muted h-2 rounded-full overflow-hidden hidden md:block">
+        <div id="course-progress-bar" class="bg-tertiary h-full rounded-full transition-all duration-500" style="width: 68%"></div>
+      </div>
+      <button class="p-2 rounded-xl hover:bg-muted text-foreground">
+        <iconify-icon icon="lucide:settings" class="text-lg"></iconify-icon>
+      </button>
+    </div>
+  </header>
+
+  <!-- Split Screen Workspace -->
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- Left Panel: Interactive Curriculum Tree (25% width, collapsible) -->
+    <aside class="w-80 bg-card border-r border-border flex flex-col shrink-0 hidden lg:flex">
+      <div class="p-4 border-b border-border flex items-center justify-between">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Course Syllabus</h3>
+        <span class="text-xs bg-secondary text-secondary-foreground font-bold px-2 py-0.5 rounded-md">18 Lessons</span>
+      </div>
+      
+      <!-- Scrollable tree list -->
+      <div class="flex-1 overflow-y-auto p-3 space-y-4">
+        
+        <!-- Module 1 -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between p-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+            <span>1. Introduction to Spatial Design</span>
+            <iconify-icon icon="lucide:circle-check" class="text-tertiary text-sm"></iconify-icon>
+          </div>
+          <div class="space-y-0.5">
+            <div class="flex items-center justify-between p-2 rounded-lg text-xs text-muted-foreground hover:bg-muted/50">
+              <span class="flex items-center gap-2"><iconify-icon icon="lucide:play" class="text-tertiary"></iconify-icon> 1.1 Course Overview</span>
+              <iconify-icon icon="lucide:check" class="text-tertiary"></iconify-icon>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-lg text-xs text-muted-foreground hover:bg-muted/50">
+              <span class="flex items-center gap-2"><iconify-icon icon="lucide:file" class="text-tertiary"></iconify-icon> 1.2 Defining Spatial Philosophy</span>
+              <iconify-icon icon="lucide:check" class="text-tertiary"></iconify-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between p-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+            <span>3. Lighting Foundations</span>
+            <iconify-icon icon="lucide:circle-check" class="text-tertiary text-sm"></iconify-icon>
+          </div>
+          <div class="space-y-0.5">
+            <div class="flex items-center justify-between p-2 rounded-lg text-xs text-muted-foreground hover:bg-muted/50">
+              <span class="flex items-center gap-2"><iconify-icon icon="lucide:play" class="text-tertiary"></iconify-icon> 3.1 Hard vs Soft Light</span>
+              <iconify-icon icon="lucide:check" class="text-tertiary"></iconify-icon>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-lg text-xs text-muted-foreground hover:bg-muted/50">
+              <span class="flex items-center gap-2"><iconify-icon icon="lucide:play" class="text-tertiary"></iconify-icon> 3.2 Shadows as Geometry</span>
+              <iconify-icon icon="lucide:check" class="text-tertiary"></iconify-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 4 (Current) -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between p-2 text-xs font-bold text-foreground uppercase tracking-wider">
+            <span>4. Spatial Moods</span>
+            <span class="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-bold">Active</span>
+          </div>
+          <div class="space-y-0.5">
+            <div class="flex items-center justify-between p-2 rounded-lg text-xs text-muted-foreground hover:bg-muted/50">
+              <span class="flex items-center gap-2"><iconify-icon icon="lucide:play" class="text-tertiary"></iconify-icon> 4.1 Natural Light Beams</span>
+              <iconify-icon icon="lucide:check" class="text-tertiary"></iconify-icon>
+            </div>
+            <!-- Active Lesson Item -->
+            <div class="flex items-center justify-between p-2 rounded-lg text-xs bg-secondary text-secondary-foreground font-semibold">
+              <span class="flex items-center gap-2"><iconify-icon icon="lucide:play" class="text-primary"></iconify-icon> 4.2 Advanced Lighting &amp; Moods</span>
+              <span id="lesson-status-badge" class="w-2 h-2 rounded-full bg-primary"></span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-lg text-xs text-muted-foreground hover:bg-muted/50 opacity-60">
+              <span class="flex items-center gap-2"><iconify-icon icon="lucide:lock" class="text-muted-foreground"></iconify-icon> 4.3 Shadows &amp; Textures</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- Right Panel: Media-Rich Content Viewer (75% width) -->
+    <main class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+      
+      <!-- Video Player Container -->
+      <div class="bg-black rounded-2xl overflow-hidden aspect-video relative group shadow-lg max-h-[500px] w-full mx-auto">
+        <img src="https://uxmagic.blob.core.windows.net/public/agent-images/video-frame-1791824538148-q1rk5b4esa.png" alt="Architectural lighting video lesson preview" class="w-full h-full object-cover opacity-90" width="1536" height="1024">
+        
+        <!-- Video Player Overlays -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <!-- Top Bar -->
+          <div class="flex justify-between items-center text-white text-xs">
+            <span class="font-medium">Lesson 4.2: Advanced Architectural Lighting &amp; Moods</span>
+            <span class="bg-card/10 px-2 py-1 rounded backdrop-blur-sm">1080p HD</span>
+          </div>
+          
+          <!-- Center Play Button -->
+          <button class="w-16 h-16 rounded-full bg-card/20 hover:bg-card/30 backdrop-blur-md text-card-foreground flex items-center justify-center mx-auto transition-transform hover:scale-105">
+            <iconify-icon icon="lucide:play" class="text-3xl pl-1"></iconify-icon>
+          </button>
+          
+          <!-- Bottom Controls -->
+          <div class="space-y-3">
+            <!-- Timeline Track -->
+            <div class="relative w-full h-1 bg-card/30 rounded-full cursor-pointer">
+              <div class="absolute left-0 top-0 bottom-0 bg-primary rounded-full" style="width: 45%"></div>
+              <div class="absolute left-[45%] top-1/2 -translate-y-1/2 w-3 h-3 bg-card rounded-full shadow"></div>
+            </div>
+            
+            <div class="flex justify-between items-center text-white text-xs">
+              <div class="flex items-center gap-4">
+                <button class="hover:text-primary transition-colors"><iconify-icon icon="lucide:play" class="text-lg"></iconify-icon></button>
+                <div class="flex items-center gap-1.5">
+                  <button class="hover:text-primary transition-colors"><iconify-icon icon="lucide:volume" class="text-lg"></iconify-icon></button>
+                  <div class="w-16 h-1 bg-card/30 rounded-full"><div class="bg-card h-full rounded-full" style="width: 80%"></div></div>
+                </div>
+                <span>08:42 / 18:15</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <button class="hover:text-primary transition-colors"><iconify-icon icon="lucide:settings" class="text-lg"></iconify-icon></button>
+                <button class="hover:text-primary transition-colors"><iconify-icon icon="lucide:monitor" class="text-lg"></iconify-icon></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lesson Info & Primary Action -->
+      <div class="flex flex-col md:flex-row justify-between md:items-start gap-4 pb-6 border-b border-border">
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-primary uppercase tracking-wider">Module 4 · Lesson 4.2</span>
+            <span class="w-1 h-1 rounded-full bg-border"></span>
+            <span class="text-xs text-muted-foreground">18 minutes duration</span>
+          </div>
+          <h1 class="text-2xl font-heading font-bold text-foreground">Advanced Architectural Lighting &amp; Moods</h1>
+          <p class="text-sm text-muted-foreground max-w-3xl">In this lesson, we break down the practical application of directional light cones and soft bounce angles to define interior volume, using raw concrete backdrops.</p>
+        </div>
+        
+        <!-- Interactive Complete Button -->
+        <button id="complete-btn" onclick="markLessonComplete()" class="shrink-0 px-6 py-3.5 bg-primary text-primary-foreground hover:bg-primary/95 font-semibold rounded-xl text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-md">
+          <iconify-icon id="complete-icon" icon="lucide:check" class="text-lg"></iconify-icon>
+          <span id="complete-text">Mark as Complete</span>
+        </button>
+      </div>
+
+      <!-- Tabs Segment (Transcript, Downloads, Community) -->
+      <div class="space-y-4">
+        <div class="border-b border-border flex gap-6">
+          <button class="border-b-2 border-primary pb-3 text-sm font-semibold text-foreground">Lesson Overview</button>
+          <button class="text-muted-foreground hover:text-foreground pb-3 text-sm font-medium">Resources &amp; Files (2)</button>
+          <button class="text-muted-foreground hover:text-foreground pb-3 text-sm font-medium">Discussion (14)</button>
+        </div>
+        
+        <div class="space-y-4 text-sm text-muted-foreground max-w-3xl leading-relaxed">
+          <p>This session covers the architectural lighting style seen in premium gallery design. By arranging high-contrast lighting sources, we create depth and focus on the natural textures of building elements.</p>
+          <h4 class="font-heading font-bold text-foreground text-sm pt-2">Key Takeaways:</h4>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li>Understanding bounce ratios off matte vs polished surfaces.</li>
+            <li>Setting up artificial light arrays to simulate natural sunbeams.</li>
+            <li>Controlling shadow density to emphasize architectural volume.</li>
+          </ul>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Interactive Mark as Complete Script -->
+  <script>
+    let completed = false;
+    function markLessonComplete() {
+      if (completed) return;
+      completed = true;
+      
+      const btn = document.getElementById('complete-btn');
+      const icon = document.getElementById('complete-icon');
+      const text = document.getElementById('complete-text');
+      const progressText = document.getElementById('progress-text');
+      const progressBar = document.getElementById('course-progress-bar');
+      const statusBadge = document.getElementById('lesson-status-badge');
+
+      // Morph button to Emerald/Success state
+      btn.className = "shrink-0 px-6 py-3.5 bg-tertiary text-white font-semibold rounded-xl text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-md scale-105";
+      icon.setAttribute('icon', 'lucide:circle-check');
+      text.innerText = "Completed";
+      
+      // Update sidebar status indicator
+      if (statusBadge) {
+        statusBadge.className = "w-4 h-4 rounded-full bg-tertiary flex items-center justify-center text-white";
+        statusBadge.innerHTML = '<iconify-icon icon="lucide:check" class="text-xs"></iconify-icon>';
+      }
+
+      // Smoothly update global progress bars (68% -> 74%)
+      progressBar.style.width = "74%";
+      progressText.innerText = "Course progress: 74%";
+
+      // Micro-confetti burst simulation (simple alert/visual feedback)
+      const burst = document.createElement('div');
+      burst.className = "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-tertiary text-white px-4 py-2 rounded-full text-xs font-bold shadow-xl animate-bounce z-50 flex items-center gap-1.5";
+      burst.innerHTML = '<iconify-icon icon="lucide:zap"></iconify-icon> Lesson complete! +100 XP';
+      document.body.appendChild(burst);
+      setTimeout(() => burst.remove(), 2500);
+    }
+  </script>
+</div>
+
+</body></html>
