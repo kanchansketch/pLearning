@@ -123,8 +123,8 @@ export const apiService = {
         }),
       });
     } catch (err) {
-      console.warn('[apiService] Failed updating progress on server:', err.message);
-      return storageService.toggleLessonComplete(courseId, lessonId);
+      console.warn('[apiService] Backend progress sync skipped (using local state):', err.message);
+      return null;
     }
   },
 

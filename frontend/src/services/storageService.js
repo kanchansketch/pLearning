@@ -15,7 +15,7 @@ function recalculateCourseState(course) {
   const allLessons = [];
   course.modules.forEach((mod) => {
     (mod.lessons || []).forEach((les) => {
-      allLessons.push(les);
+      allLessons.push({ ...les });
     });
   });
 
@@ -39,12 +39,17 @@ function recalculateCourseState(course) {
     }
   });
 
-  // Update module completed states
+  // Reconstruct modules with updated lessons
+  let lessonCursor = 0;
   const updatedModules = course.modules.map((mod) => {
-    const modLessons = mod.lessons || [];
+    const modLessonCount = (mod.lessons || []).length;
+    const modLessons = allLessons.slice(lessonCursor, lessonCursor + modLessonCount);
+    lessonCursor += modLessonCount;
+
     const allModDone = modLessons.length > 0 && modLessons.every((l) => l.isCompleted);
     return {
       ...mod,
+      lessons: modLessons,
       isCompleted: allModDone,
     };
   });
@@ -179,7 +184,7 @@ export const storageService = {
   },
 
   // ── Lesson Completion & Unlock Engine ─────────────────────────
-  toggleLessonComplete: (courseId, lessonId) => {
+  toggleLessonComplete: (courseId, lessonId, forceState) => {
     const list = storageService.getCourses();
     let updatedLesson = null;
     let targetCourse = null;
@@ -192,7 +197,7 @@ export const storageService = {
         ...mod,
         lessons: (mod.lessons || []).map((l) => {
           if (l.id === lessonId) {
-            const nextCompleted = !l.isCompleted;
+            const nextCompleted = forceState !== undefined ? Boolean(forceState) : !l.isCompleted;
             updatedLesson = { ...l, isCompleted: nextCompleted };
             return updatedLesson;
           }

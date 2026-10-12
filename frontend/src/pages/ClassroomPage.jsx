@@ -192,7 +192,11 @@ export default function ClassroomPage() {
   // Toggle lesson complete and advance
   const handleToggleComplete = () => {
     if (activeCourse?.id && currentLesson?.id) {
-      toggleLessonComplete(activeCourse.id, currentLesson.id);
+      const nextState = !isCurrentCompleted;
+      toggleLessonComplete(activeCourse.id, currentLesson.id, nextState);
+      if (nextState) {
+        setLockedNotice(null);
+      }
     }
   };
 

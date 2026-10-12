@@ -71,8 +71,8 @@ export function AppProvider({ children }) {
   };
 
   // Toggle lesson complete & save to localStorage + background sync to backend
-  const toggleLessonComplete = (courseId, lessonId) => {
-    const result = storageService.toggleLessonComplete(courseId, lessonId);
+  const toggleLessonComplete = (courseId, lessonId, forceState) => {
+    const result = storageService.toggleLessonComplete(courseId, lessonId, forceState);
     setCourses(result.courses);
     if (user?.id) {
       apiService.updateProgress(user.id, courseId, lessonId).catch(() => {});
