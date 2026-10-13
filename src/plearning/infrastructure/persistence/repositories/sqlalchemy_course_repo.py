@@ -100,6 +100,10 @@ class SQLAlchemyCourseRepository(CourseRepository):
             title=course.title,
             description=course.description,
             teacher_id=course.teacher_id,
+            status=getattr(course, "status", "Published"),
+            category=getattr(course, "category", "Architecture & Design"),
+            rating=getattr(course, "rating", 4.8),
+            thumbnail_url=getattr(course, "thumbnail_url", ""),
             created_at=course.created_at,
             updated_at=course.updated_at,
             modules=[
@@ -117,6 +121,9 @@ class SQLAlchemyCourseRepository(CourseRepository):
                             description=ls.description,
                             content=ls.content,
                             content_url=ls.content_url,
+                            content_type=getattr(ls, "content_type", "Rich Text Article"),
+                            duration_minutes=getattr(ls, "duration_minutes", 20),
+                            access_level=getattr(ls, "access_level", "Enrolled Students Only"),
                             order=ls.order,
                             assignments=[
                                 AssignmentModel(
@@ -143,6 +150,10 @@ class SQLAlchemyCourseRepository(CourseRepository):
             title=model.title,
             description=model.description,
             teacher_id=model.teacher_id,
+            status=getattr(model, "status", "Published") or "Published",
+            category=getattr(model, "category", "Architecture & Design") or "Architecture & Design",
+            rating=float(getattr(model, "rating", 4.8) or 4.8),
+            thumbnail_url=getattr(model, "thumbnail_url", "") or "",
             modules=[],
             created_at=model.created_at,
             updated_at=model.updated_at,
@@ -164,6 +175,9 @@ class SQLAlchemyCourseRepository(CourseRepository):
                     description=lm.description,
                     content=lm.content,
                     content_url=lm.content_url,
+                    content_type=getattr(lm, "content_type", "Rich Text Article") or "Rich Text Article",
+                    duration_minutes=int(getattr(lm, "duration_minutes", 20) or 20),
+                    access_level=getattr(lm, "access_level", "Enrolled Students Only") or "Enrolled Students Only",
                     order=lm.order,
                     assignments=[],
                 )

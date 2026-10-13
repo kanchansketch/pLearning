@@ -9,15 +9,18 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from plearning.infrastructure.persistence.database import init_db
+from plearning.infrastructure.persistence.database import async_session_factory, init_db
+from plearning.infrastructure.persistence.seeder import seed_data
 from plearning.interface.api.routers import (
     assessment_router,
+    auth_router,
     content_router,
     course_router,
     enrollment_router,
     evaluation_router,
     progress_router,
     submission_router,
+    teacher_router,
 )
 
 
@@ -25,6 +28,11 @@ from plearning.interface.api.routers import (
 async def lifespan(app: FastAPI):
     """Startup / shutdown lifecycle."""
     await init_db()
+    async with async_session_factory() as session:
+        try:
+            await seed_data(session)
+        except Exception as e:
+            print(f"Warning: Seed data failed or already seeded: {e}")
     yield
 
 
@@ -32,8 +40,8 @@ def create_app() -> FastAPI:
     """Create and configure the FastAPI application."""
     application = FastAPI(
         title="pLearning API",
-        description="Adaptive Learning Platform – V1",
-        version="1.0.0",
+        description="Adaptive Learning Platform – V2 API",
+        version="2.0.0",
         lifespan=lifespan,
     )
 
@@ -47,6 +55,8 @@ def create_app() -> FastAPI:
     )
 
     # ── Register all routers ─────────────────────────────────────
+    application.include_router(auth_router.router)
+    application.include_router(teacher_router.router)
     application.include_router(course_router.router)
     application.include_router(enrollment_router.router)
     application.include_router(content_router.router)

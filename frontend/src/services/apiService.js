@@ -237,4 +237,127 @@ export const apiService = {
       return null;
     }
   },
+
+  // ── Auth & User Profile ──────────────────────────────────────
+  async login(email, password, role = 'student') {
+    try {
+      return await request('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password, role }),
+      });
+    } catch (err) {
+      console.warn('[apiService] Login API error, using fallback:', err.message);
+      return {
+        access_token: 'token_mock_' + Date.now(),
+        user: {
+          id: role === 'teacher' ? 'teacher_marcus' : 'student_alex',
+          name: role === 'teacher' ? 'Prof. Marcus Vance' : 'Alex Rivera',
+          email,
+          role,
+          avatar: role === 'teacher' ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80' : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+          bio: role === 'teacher' ? 'Architectural lighting designer with 15+ years of experience.' : 'Graduate interaction design student.',
+        },
+      };
+    }
+  },
+
+  async register(userData) {
+    try {
+      return await request('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify(userData),
+      });
+    } catch (err) {
+      console.warn('[apiService] Register API error:', err.message);
+      return {
+        access_token: 'token_mock_' + Date.now(),
+        user: { id: `user_${Date.now()}`, ...userData },
+      };
+    }
+  },
+
+  async getProfile(userId = 'teacher_marcus') {
+    try {
+      return await request(`/auth/me?user_id=${userId}`);
+    } catch (err) {
+      console.warn('[apiService] Failed fetching profile:', err.message);
+      return null;
+    }
+  },
+
+  async updateProfile(userId, profileData) {
+    try {
+      return await request(`/auth/profile?user_id=${userId}`, {
+        method: 'PUT',
+        body: JSON.stringify(profileData),
+      });
+    } catch (err) {
+      console.warn('[apiService] Failed updating profile:', err.message);
+      return profileData;
+    }
+  },
+
+  // ── Teacher Studio & Curriculum ──────────────────────────────
+  async getTeacherAnalytics(teacherId = 'teacher_marcus') {
+    try {
+      return await request(`/teacher/analytics?teacher_id=${teacherId}`);
+    } catch (err) {
+      console.warn('[apiService] Failed fetching teacher analytics, using fallback:', err.message);
+      return null;
+    }
+  },
+
+  async getTeacherCourses(teacherId = 'teacher_marcus') {
+    try {
+      return await request(`/teacher/courses?teacher_id=${teacherId}`);
+    } catch (err) {
+      console.warn('[apiService] Failed fetching teacher courses, using fallback:', err.message);
+      return null;
+    }
+  },
+
+  async createTeacherCourse(courseData, teacherId = 'teacher_marcus') {
+    try {
+      return await request(`/teacher/courses?teacher_id=${teacherId}`, {
+        method: 'POST',
+        body: JSON.stringify(courseData),
+      });
+    } catch (err) {
+      console.warn('[apiService] Failed creating teacher course:', err.message);
+      return { id: `course_${Date.now()}`, ...courseData };
+    }
+  },
+
+  async updateCourseStatus(courseId, status) {
+    try {
+      return await request(`/teacher/courses/${courseId}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      });
+    } catch (err) {
+      console.warn('[apiService] Failed updating course status:', err.message);
+      return { id: courseId, status };
+    }
+  },
+
+  async getCurriculum(courseId) {
+    try {
+      return await request(`/teacher/curriculum/${courseId}`);
+    } catch (err) {
+      console.warn('[apiService] Failed fetching curriculum:', err.message);
+      return null;
+    }
+  },
+
+  async saveCurriculum(courseId, curriculumData) {
+    try {
+      return await request(`/teacher/curriculum/${courseId}`, {
+        method: 'PUT',
+        body: JSON.stringify(curriculumData),
+      });
+    } catch (err) {
+      console.warn('[apiService] Failed saving curriculum to server:', err.message);
+      return curriculumData;
+    }
+  },
 };

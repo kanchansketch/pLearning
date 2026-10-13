@@ -82,6 +82,11 @@ async def create_course(
     response_model=List[CourseResponse],
     summary="View all courses",
 )
+@router.get(
+    "/view_all_courses",
+    response_model=List[CourseResponse],
+    include_in_schema=False,
+)
 async def view_courses(
     teacher_id: str | None = None,
     service: CourseService = Depends(get_course_service),
@@ -100,6 +105,11 @@ async def view_courses(
     "/view_courses/{course_id}",
     response_model=CourseResponse,
     summary="View a single course",
+)
+@router.get(
+    "/view_course_curriculum/{course_id}",
+    response_model=CourseResponse,
+    include_in_schema=False,
 )
 async def view_course(
     course_id: str,

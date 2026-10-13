@@ -27,6 +27,10 @@ class Course:
     description: str
     teacher_id: str
     modules: List["Module"] = field(default_factory=list)
+    status: str = "Published"
+    rating: float = 4.8
+    category: str = "Architecture & Design"
+    thumbnail_url: str = ""
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -41,6 +45,10 @@ class Course:
         title: str,
         description: str,
         teacher_id: str,
+        status: str = "Published",
+        rating: float = 4.8,
+        category: str = "Architecture & Design",
+        thumbnail_url: str = "",
     ) -> Course:
         """Create a new course with generated ID."""
         return cls(
@@ -48,9 +56,17 @@ class Course:
             title=title,
             description=description,
             teacher_id=teacher_id,
+            status=status,
+            rating=rating,
+            category=category,
+            thumbnail_url=thumbnail_url,
         )
 
     # ── Commands ──────────────────────────────────────────────────
+
+    def set_status(self, status: str) -> None:
+        self.status = status
+        self._touch()
 
     def add_module(self, module: "Module") -> None:
         """Add a module to the course."""

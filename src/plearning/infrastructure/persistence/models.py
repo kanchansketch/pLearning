@@ -25,6 +25,20 @@ class Base(DeclarativeBase):
     pass
 
 
+class UserModel(Base):
+    __tablename__ = "users"
+
+    id = Column(String(36), primary_key=True)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False, unique=True, index=True)
+    password_hash = Column(String(255), nullable=False)
+    role = Column(String(50), default="student")  # "student" | "teacher" | "admin"
+    avatar = Column(String(512), default="")
+    bio = Column(Text, default="")
+    specialization = Column(String(255), default="")
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+
 class CourseModel(Base):
     __tablename__ = "courses"
 
@@ -32,6 +46,10 @@ class CourseModel(Base):
     title = Column(String(255), nullable=False)
     description = Column(Text, default="")
     teacher_id = Column(String(255), nullable=False, index=True)
+    status = Column(String(30), default="Published")  # "Published" | "Draft" | "Archived"
+    category = Column(String(100), default="Architecture & Design")
+    rating = Column(Float, default=4.8)
+    thumbnail_url = Column(String(512), default="")
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -70,6 +88,9 @@ class LessonModel(Base):
     description = Column(Text, default="")
     content = Column(Text, default="")
     content_url = Column(String(512), default="")
+    content_type = Column(String(50), default="Rich Text Article")
+    duration_minutes = Column(Integer, default=20)
+    access_level = Column(String(50), default="Enrolled Students Only")
     order = Column(Integer, default=0)
 
     module = relationship("ModuleModel", back_populates="lessons")

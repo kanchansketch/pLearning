@@ -40,6 +40,10 @@ class CourseService:
             title=dto.title,
             description=dto.description,
             teacher_id=dto.teacher_id,
+            status=getattr(dto, "status", "Published"),
+            category=getattr(dto, "category", "Architecture & Design"),
+            rating=getattr(dto, "rating", 4.8),
+            thumbnail_url=getattr(dto, "thumbnail_url", ""),
         )
 
         for mod_dto in dto.modules:
@@ -55,6 +59,9 @@ class CourseService:
                     description=les_dto.description,
                     content=les_dto.content,
                     content_url=les_dto.content_url,
+                    content_type=getattr(les_dto, "content_type", "Rich Text Article"),
+                    duration_minutes=getattr(les_dto, "duration_minutes", 20),
+                    access_level=getattr(les_dto, "access_level", "Enrolled Students Only"),
                 )
                 for asg_dto in les_dto.assignments:
                     assignment = Assignment.create(
@@ -152,6 +159,9 @@ class CourseService:
             content_url=ls.content_url,
             order=ls.order,
             assignments=[CourseService._to_assignment_out(a) for a in ls.assignments],
+            content_type=getattr(ls, "content_type", "Rich Text Article"),
+            duration_minutes=getattr(ls, "duration_minutes", 20),
+            access_level=getattr(ls, "access_level", "Enrolled Students Only"),
         )
 
     @staticmethod
@@ -175,4 +185,8 @@ class CourseService:
             modules=[CourseService._to_module_out(m) for m in c.modules],
             created_at=c.created_at.isoformat(),
             updated_at=c.updated_at.isoformat(),
+            status=getattr(c, "status", "Published"),
+            category=getattr(c, "category", "Architecture & Design"),
+            rating=getattr(c, "rating", 4.8),
+            thumbnail_url=getattr(c, "thumbnail_url", ""),
         )

@@ -23,6 +23,9 @@ class CreateLessonRequest(BaseModel):
     description: str = ""
     content: str = ""
     content_url: str = ""
+    content_type: str = "Rich Text Article"
+    duration_minutes: int = 20
+    access_level: str = "Enrolled Students Only"
     assignments: List[CreateAssignmentRequest] = Field(default_factory=list)
 
 
@@ -37,11 +40,19 @@ class CreateCourseRequest(BaseModel):
     description: str = ""
     teacher_id: str = Field(..., min_length=1)
     modules: List[CreateModuleRequest] = Field(default_factory=list)
+    status: str = "Published"
+    category: str = "Architecture & Design"
+    rating: float = 4.8
+    thumbnail_url: str = ""
 
 
 class UpdateCourseRequest(BaseModel):
     title: Optional[str] = Field(None, min_length=1, max_length=255)
     description: Optional[str] = None
+    status: Optional[str] = None
+    category: Optional[str] = None
+    rating: Optional[float] = None
+    thumbnail_url: Optional[str] = None
 
 
 # ── Response Schemas ──────────────────────────────────────────────
@@ -67,6 +78,9 @@ class LessonResponse(BaseModel):
     content: str
     content_url: str
     order: int
+    content_type: str = "Rich Text Article"
+    duration_minutes: int = 20
+    access_level: str = "Enrolled Students Only"
     assignments: List[AssignmentResponse]
 
 
@@ -88,6 +102,10 @@ class CourseResponse(BaseModel):
     title: str
     description: str
     teacher_id: str
+    status: str = "Published"
+    category: str = "Architecture & Design"
+    rating: float = 4.8
+    thumbnail_url: str = ""
     modules: List[ModuleResponse]
     created_at: str
     updated_at: str

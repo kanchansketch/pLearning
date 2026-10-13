@@ -26,6 +26,9 @@ class Lesson:
     description: str
     content: str = ""
     content_url: str = ""          # video / document URL
+    content_type: str = "Rich Text Article"
+    duration_minutes: int = 20
+    access_level: str = "Enrolled Students Only"
     order: int = 0
     assignments: List["Assignment"] = field(default_factory=list)
 
@@ -42,6 +45,9 @@ class Lesson:
         description: str,
         content: str = "",
         content_url: str = "",
+        content_type: str = "Rich Text Article",
+        duration_minutes: int = 20,
+        access_level: str = "Enrolled Students Only",
     ) -> Lesson:
         return cls(
             id=LessonId.generate(),
@@ -50,6 +56,9 @@ class Lesson:
             description=description,
             content=content,
             content_url=content_url,
+            content_type=content_type,
+            duration_minutes=duration_minutes,
+            access_level=access_level,
         )
 
     # ── Commands ──────────────────────────────────────────────────

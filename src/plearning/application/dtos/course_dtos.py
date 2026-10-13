@@ -27,6 +27,9 @@ class CreateLessonDTO:
     description: str
     content: str = ""
     content_url: str = ""
+    content_type: str = "Rich Text Article"
+    duration_minutes: int = 20
+    access_level: str = "Enrolled Students Only"
     assignments: List[CreateAssignmentDTO] = field(default_factory=list)
 
 
@@ -43,12 +46,20 @@ class CreateCourseDTO:
     description: str
     teacher_id: str
     modules: List[CreateModuleDTO] = field(default_factory=list)
+    status: str = "Published"
+    category: str = "Architecture & Design"
+    rating: float = 4.8
+    thumbnail_url: str = ""
 
 
 @dataclass(frozen=True)
 class UpdateCourseDTO:
     title: Optional[str] = None
     description: Optional[str] = None
+    status: Optional[str] = None
+    category: Optional[str] = None
+    rating: Optional[float] = None
+    thumbnail_url: Optional[str] = None
 
 
 # ── Output DTOs (read models) ────────────────────────────────────
@@ -73,6 +84,9 @@ class LessonOut:
     content_url: str
     order: int
     assignments: List[AssignmentOut]
+    content_type: str = "Rich Text Article"
+    duration_minutes: int = 20
+    access_level: str = "Enrolled Students Only"
 
 
 @dataclass(frozen=True)
@@ -94,3 +108,7 @@ class CourseOut:
     modules: List[ModuleOut]
     created_at: str
     updated_at: str
+    status: str = "Published"
+    category: str = "Architecture & Design"
+    rating: float = 4.8
+    thumbnail_url: str = ""
