@@ -17,6 +17,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY main.py pyproject.toml /app/
 COPY src/ /app/src/
 
+# Create data directory for persistent SQLite storage
+RUN mkdir -p /app/data
+
 # Expose FastAPI default port
 EXPOSE 8000
 
